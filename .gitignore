@@ -1,0 +1,6 @@
+# Ignore All
+*
+# Excpet
+!.gitignore
+!UmbracoDev/App_Code/WatermarkHelper
+!UmbracoDev/watermark.png
