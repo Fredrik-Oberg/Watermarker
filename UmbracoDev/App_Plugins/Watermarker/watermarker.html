@@ -1,0 +1,14 @@
+﻿
+<div ng-controller="WatermarkerController">
+    <input type="range" min="0" max="10" value="{{model.value}}" ng-model="model.value" class="vert" orient=vertical> />
+    <output for=fader id=volume>50</output>
+</div>
+
+<style>
+    input.vert {
+
+        -webkit-appearance: slider-vertical; writing-mode: bt-lr;
+    }
+                             
+</style>
+
