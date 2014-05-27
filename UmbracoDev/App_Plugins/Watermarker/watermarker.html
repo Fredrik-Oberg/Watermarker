@@ -1,14 +1,14 @@
 ﻿
 <div ng-controller="WatermarkerController">
-    <input type="range" min="0" max="10" value="{{model.value}}" ng-model="model.value" class="vert" orient=vertical> />
-    <output for=fader id=volume>50</output>
+    <input type="range" min="0" max="10" step="0.1" value="{{model.value}}" ng-model="model.value">
+    <input type="range" min="{{sliderVert.min}}" max="{{sliderVert.max}}" step="{{sliderVert.step}}" value="{{model.value}}" ng-model="model.value" class="{{sliderVert.cssClass}}" orient=vertical>
+    <p>{{alias}}</p>
 </div>
 
 <style>
     input.vert {
-
-        -webkit-appearance: slider-vertical; writing-mode: bt-lr;
+        -webkit-appearance: slider-vertical;
+        writing-mode: bt-lr;
     }
-                             
 </style>
 

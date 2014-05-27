@@ -1,11 +1,26 @@
 ﻿angular.module("umbraco").controller("WatermarkerController",
 //inject umbracos assetsService
-function ($scope, assetsService, dialogService) {
-   
+    function($scope, assetsService, dialogService) {
+        debugger;
+        $scope.slider =
+        {
+            min: 0,
+            max: 10,
+            step: 0.1
+        };
+        $scope.sliderVert =
+        {
+            min: 0,
+            max: 10,
+            step: 0.1,
+            cssClass: "vert",
 
-    assetsService
-        .load([
-
+        };
+        assetsService.load([
+                
+                
+             
+                
             //Ladda pluginet
             //"/App_Plugins/Redactor/lib/.js"
         ]).then(function () {
