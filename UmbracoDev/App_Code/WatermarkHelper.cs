@@ -7,23 +7,24 @@ using System.Linq;
 using System.Web;
 
 /// <summary>
-/// Adds a transparent watermark to a image, saves the image under folder "WatermarkedImages"
+/// Adds a transparent watermark to a image, saves the image under folder the media folder
 /// </summary>
 /// <remarks>Checks if an image already is saved with a watermark then returns that url</remarks>
 /// <param name="imageUrl">Url to the image</param>
 /// <param name="posX">Width position, default is Right</param>
 /// <param name="posY">Height position, default is Bottom</param>
 /// <param name="opacity">Opacity of the watermark, default is 0.3f</param>
-/// <param name="watermarkerPath">Path to watermark, default is in root watermark.png</param>
+/// <param name="watermarkerPath">Path to watermarkimage, default is in root media/watermark.png</param>
 /// <param name="overwrite">Overwrites a already saved image</param>
 /// <returns></returns>
 public static class WatermarkHelper
 {
-    private const string SubPath = "WatermarkedImages";
-    private static string _watermarkPath = "watermark.png"; 
+    private static string _watermarkPath = "media/watermark.png"; 
 
     private static string _filename = String.Empty;
     private static string _savePath = String.Empty;
+    private static string _relativePath = String.Empty;
+
 
     public static string CreateWatermark(string imageUrl, WatermarkPositionX posX = WatermarkPositionX.Right, 
                                                           WatermarkPositionY posY = WatermarkPositionY.Bottom, 
@@ -35,26 +36,24 @@ public static class WatermarkHelper
             _watermarkPath = watermarkerPath;
 
     
-        
-        //Get the path
+        //Get the path and URI's
         var appPath = AppDomain.CurrentDomain.BaseDirectory;
+        var absoluteUri = new Uri(appPath + imageUrl);
 
-        var uri = new Uri(appPath + imageUrl);
-
-        if (!uri.IsFile)
+        if (!absoluteUri.IsFile)
             return imageUrl;
-            
-        _filename = Path.GetFileNameWithoutExtension(uri.LocalPath);
-        _savePath = SubPath + "/" + _filename + "_watermark.jpg";
-    
 
-        if (File.Exists(appPath + _savePath) && !overwrite)
-            return "/" + _savePath;
+        _filename = Path.GetFileNameWithoutExtension(absoluteUri.LocalPath);
+        _savePath = Path.GetDirectoryName(absoluteUri.LocalPath) + "/" + _filename + "_watermark.jpg";
+        _relativePath = _savePath.Replace(appPath, "");
+
+        if (File.Exists(_savePath) && !overwrite)
+            return _relativePath;
             
             try
             {
                 //Get image from URL
-                var image = Image.FromFile(uri.LocalPath);
+                var image = Image.FromFile(absoluteUri.LocalPath);
                 var imageWidth = image.Width;
                 var imageHeight = image.Height;
 
@@ -116,11 +115,10 @@ public static class WatermarkHelper
                 //Save 
                 using (var ms = new MemoryStream())
                 {
-                    if (!Directory.Exists(appPath + SubPath))
-                        Directory.CreateDirectory(appPath + SubPath);
+                    //if (!Directory.Exists(appPath))
+                    //    Directory.CreateDirectory(appPath);
 
-                    _savePath = SubPath + "/" + _filename + "_watermark.jpg";
-                    image.Save(appPath + _savePath, jgpEncoder, myEncoderParameters);
+                    image.Save(_savePath, jgpEncoder, myEncoderParameters);
 
                     image.Save(ms, jgpEncoder,myEncoderParameters);
                     ms.Close();
@@ -136,7 +134,8 @@ public static class WatermarkHelper
                 return imageUrl;
             }
 
-            return "/" + _savePath;
+        return _relativePath;
+
     }
 
     private static ImageAttributes GetWatermarkModifications(float opacity)
