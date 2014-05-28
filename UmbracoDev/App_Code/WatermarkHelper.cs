@@ -24,6 +24,8 @@ public static class WatermarkHelper
     private static string _filename = String.Empty;
     private static string _savePath = String.Empty;
     private static string _relativePath = String.Empty;
+    private static float _opacity = 0;
+    
 
 
     public static string CreateWatermark(string imageUrl, WatermarkPositionX posX = WatermarkPositionX.Right, 
@@ -32,10 +34,12 @@ public static class WatermarkHelper
                                                           string watermarkerPath = "", 
                                                           bool overwrite = false )
     {
+        _opacity = opacity;
         if (!String.IsNullOrEmpty(watermarkerPath))
-            _watermarkPath = watermarkerPath;
+        {
+            ParsePath(watermarkerPath);
+        }
 
-    
         //Get the path and URI's
         var appPath = AppDomain.CurrentDomain.BaseDirectory;
         var absoluteUri = new Uri(appPath + imageUrl);
@@ -91,7 +95,7 @@ public static class WatermarkHelper
                 var grWatermark = Graphics.FromImage(bmWatermark);
 
                 //Get modifications 
-                var imageAttributes = GetWatermarkModifications(opacity);
+                var imageAttributes = GetWatermarkModifications(_opacity);
 
                 var xPosOfWm = GetXpos(posX, imageWidth, wmWidth);
                 var yPosOfWm = GetYpos(posY, imageHeight, wmHeight);
@@ -135,6 +139,14 @@ public static class WatermarkHelper
             }
 
         return _relativePath;
+
+    }
+
+    private static void ParsePath(string watermarkPath)
+    {
+        var data = watermarkPath.Split(';');
+        _watermarkPath = data[0];
+        _opacity = float.Parse(data[1]);
 
     }
 
