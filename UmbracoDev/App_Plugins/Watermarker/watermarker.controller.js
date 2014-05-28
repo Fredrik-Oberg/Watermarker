@@ -33,23 +33,28 @@
                 }
             });
         };
-        function parseImgData(imgData) {
-         
-            var data = imgData.split(";");   
-            $scope.sliderOpacity.value = data[1];
-            $scope.sliderSize.value = data[2];
-            $scope.sliderSize.max = data[3];
+        function parseImgData(data) {
+            
+            $scope.sliderOpacity.value = data.opacity;
+            $scope.sliderSize.value = data.size;
+            $scope.sliderSize.max = data.orgSize;
 
-            return data[0];
+            return data.value;
         }
         $scope.$on("formSubmitting", function (ev, args) {
-            
-            var imgValue = $scope.img;
-            var opacity = $scope.sliderOpacity.value;
-            var size = $scope.sliderSize.value;
-            var orgSize = $scope.sliderSize.max;
+            debugger;
+            var watermarker = {
+                value: $scope.img,
+                opacity: $scope.sliderOpacity.value,
+                size: $scope.sliderSize.value,
+                orgSize: $scope.sliderSize.max
+            };
+            //var imgValue = $scope.img;
+            //var opacity = $scope.sliderOpacity.value;
+            //var size = $scope.sliderSize.value;
+            //var orgSize = $scope.sliderSize.max;
 
-            $scope.model.value = imgValue + ";" +opacity + ";" + size + ";" + orgSize;
+            $scope.model.value = watermarker;
         });
 
 
