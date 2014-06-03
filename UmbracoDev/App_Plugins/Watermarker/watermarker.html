@@ -10,18 +10,20 @@
     <div class="image-watermark">
         <img ng-model="watermarkerImage" ng-src="{{img}}" ng-style="{opacity:sliderOpacity.value, width:sliderSize.value}; " />
 
-        </div>
-        <!--<img style="opacity:{{sliderOpacity.value}};" src="/media/1002/watermark.png">-->
     </div>
+    <img ng-model="watermarkerPreValueImage" ng-src="{{preValImg}}" ng-style="{width:preImgSize};"   />
 
-    <style>
-        input.vert {
-            -webkit-appearance: slider-vertical;
-            writing-mode: bt-lr;
-        }
+    <!--<img style="opacity:{{sliderOpacity.value}};" src="/media/1002/watermark.png">-->
+</div>
 
-        div.image-watermark {
-            min-height: 300px;     
-        }
-    </style>
+<style>
+    input.vert {
+        -webkit-appearance: slider-vertical;
+        writing-mode: bt-lr;
+    }
+
+    div.image-watermark {
+        min-height: 300px;
+    }
+</style>
 

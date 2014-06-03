@@ -1,7 +1,7 @@
 ﻿angular.module("umbraco").controller("WatermarkerController",
 //inject umbracos assetsService
     function($scope, assetsService, imageHelper, dialogService, mediaHelper, umbRequestHelper) {
-        
+        debugger;
         $scope.sliderOpacity =
         {
             min: 0.01,
@@ -18,8 +18,13 @@
             cssClass: "vert",
 
         };
+    
         $scope.img = $scope.model.value != "" ? parseImgData($scope.model.value) : "";
-        
+
+        if ($scope.model.config) {
+            $scope.preValImg = $scope.model.config.watermarker;
+            $scope.preImgSize = $scope.sliderSize.value / 2;
+        }
         $scope.watermarkPicker = function () {
    
             dialogService.mediaPicker({
